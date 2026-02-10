@@ -1,7 +1,8 @@
+import styles from './ContactForm.module.css';
 import React, { useState } from 'react';
 
 function ContactForm() {
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
   const [submittedData, setSubmittedData] = useState(null);
   const [errors, setErrors] = useState({});
 
@@ -10,20 +11,22 @@ function ContactForm() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const validate = () => {
-    const newErrors = {};
-    if (!formData.name.trim()) newErrors.name = 'Name is required';
-    if (!formData.email.includes('@')) newErrors.email = 'Invalid email';
-    if (!formData.message.trim()) newErrors.message = 'Message is required';
-    return newErrors;
-  };
+const validate = () => {
+  const newErrors = {};
+  if (!formData.name.trim()) newErrors.name = 'Name is required';
+  if (!formData.email.includes('@')) newErrors.email = 'Invalid email';
+  if (!formData.message.trim()) newErrors.message = 'Message is required';
+  const phonePattern = /^\d{10}$/; // NTS: /^\d{10}$ = exactly 10 digits, no spaces or symbols
+  if (!phonePattern.test(formData.phone)) newErrors.phone = '10 digit phone number is required';
+  return newErrors;
+};
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const validationErrors = validate();
     if (Object.keys(validationErrors).length === 0) {
       setSubmittedData(formData);
-      setFormData({ name: '', email: '', message: '' });
+      setFormData({ name: '', email: '', phone: '', message: '' });
       setErrors({});
     } else {
       setErrors(validationErrors);
@@ -31,22 +34,29 @@ function ContactForm() {
   };
 
   return (
-    <div>
+    //previous container: <div
+    <div className={styles.container}>
       <h2>Contact Us</h2>
       <form onSubmit={handleSubmit}>
         <label>Name:<br />
           <input type="text" name="name" value={formData.name} onChange={handleChange} />
-          {errors.name && <p style={{color: 'red'}}>{errors.name}</p>}
+          {errors.name && <p className={styles.error}>{errors.name}</p>}
         </label><br /><br />
 
         <label>Email:<br />
           <input type="email" name="email" value={formData.email} onChange={handleChange} />
-          {errors.email && <p style={{color: 'red'}}>{errors.email}</p>}
+          {errors.email && <p className={styles.error}>{errors.email}</p>}
         </label><br /><br />
+       
+        <label>
+         Phone:<br />
+         <input type="tel" name="phone" value={formData.phone} onChange={handleChange} pattern="[0-9]{10}" placeholder="Must be 10 digits" />
+          {errors.phone && <p className={styles.error}>{errors.phone}</p>}
+          </label><br /><br />
 
         <label>Message:<br />
           <textarea name="message" rows="5" value={formData.message} onChange={handleChange}></textarea>
-          {errors.message && <p style={{color: 'red'}}>{errors.message}</p>}
+          {errors.message && <p className={styles.error}>{errors.message}</p>}
         </label><br /><br />
 
         <button type="submit">Submit</button>
