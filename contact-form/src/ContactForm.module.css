@@ -1,0 +1,28 @@
+.container {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 40px;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  background-color: #d1d8c7;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+}
+
+button {
+  padding: 10px 16px;
+  background-color: #43665a;
+  color: rgb(192, 241, 255);
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  border: none;
+  cursor: pointer;
+}
+
+.error {
+  color: rgb(134, 83, 0);
+  font-size: 14px;
+}
